@@ -35,6 +35,11 @@
 #define OSGPPU_VIEWPORT_INV_WIDTH_UNIFORM "osgppu_InvViewportWidth"
 #define OSGPPU_VIEWPORT_INV_HEIGHT_UNIFORM "osgppu_InvViewportHeight"
 
+#include <osg/Version>
+#if OPENSCENEGRAPH_SOVERSION >= 130
+#define USE_GLEXTENSION 
+#include <osg/GLExtensions>
+#endif 
 namespace osgPPU
 {
 
@@ -307,7 +312,11 @@ class OSGPPU_EXPORT Unit : public osg::Group {
         **/
         inline void popFrameBufferObject(osg::State& state)
         {
+#ifdef USE_GLEXTENSION
+            osg::GLExtensions* ext = state.get<osg::GLExtensions>();
+#else 
             osg::FBOExtensions* ext = osg::FBOExtensions::instance(state.getContextID(), true);
+#endif 
             ext->glBindFramebuffer(GL_FRAMEBUFFER_EXT, mPushedFBO[state.getContextID()]);
         }
 

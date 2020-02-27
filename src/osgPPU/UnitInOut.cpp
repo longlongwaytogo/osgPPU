@@ -41,9 +41,20 @@ namespace osgPPU
             // fill texture with default pixel values
             void load (const osg::Texture2DArray &texture, osg::State &state) const
             {
+                bool bTexture2DArraySupported = false;
+#ifdef USE_GLEXTENSION
+                osg::GLExtensions* ext = state.get<osg::GLExtensions>();
+                if(ext)
+                {
+                    bTexture2DArraySupported = ext->isTexture2DArraySupported;
+                }
+#else
+
                 // do only anything if such textures are supported
                 osg::Texture2DArray::Extensions* ext = osg::Texture2DArray::getExtensions(state.getContextID(), true);
-                if (ext && ext->isTexture2DArraySupported())
+                bTextureArraySupport = ext->isTexture2DArraySupported();
+#endif 
+                if (ext && bTexture2DArraySupported )
                 {
                     // create temporary image which is initialized with 0 values
                     osg::ref_ptr<osg::Image> img = new osg::Image();
@@ -82,9 +93,22 @@ namespace osgPPU
             // fill texture with default pixel values
             void load (const osg::Texture3D &texture, osg::State &state) const
             {
+                bool bTexture3DSupported =false;
+#ifdef USE_GLEXTENSION
+                osg::GLExtensions* ext = state.get<osg::GLExtensions>();
+                if(ext)
+                {
+                    bTexture3DSupported = ext->isTexture3DSupported;
+                }
+#else
+
+
+
                 // do only anything if such textures are supported
                 osg::Texture3D::Extensions* ext = osg::Texture3D::getExtensions(state.getContextID(), true);
-                if (ext && ext->isTexture3DSupported())
+                bTexture3DSupported = ext->isTexture3DSupported();
+#endif 
+                if (ext && bTexture3DSupported )
                 {
                     // create temporary image which is initialized with 0 values
                     osg::ref_ptr<osg::Image> img = new osg::Image();

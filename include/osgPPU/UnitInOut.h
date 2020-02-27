@@ -31,6 +31,12 @@
 #define OSGPPU_3D_SLICE_NUMBER "osgppu_ZSliceNumber"
 #define OSGPPU_3D_SLICE_INDEX "osgppu_ZSliceIndex"
 
+#include <osg/Version>
+#if OPENSCENEGRAPH_SOVERSION >= 130
+#define USE_GLEXTENSION 
+#include <osg/GLExtensions> 
+#endif
+
 namespace osgPPU
 {
 

@@ -222,6 +222,7 @@ namespace osgPPU
         return false;
     }
 
+
     //--------------------------------------------------------------------------
     void UnitInMipmapOut::noticeFinishRendering(osg::RenderInfo &renderInfo, const osg::Drawable* drawable)
     {
@@ -233,8 +234,12 @@ namespace osgPPU
         if (mUseShader) return;
 
         // get the fbo extensions
+      //  osg::FBOExtensions* fbo_ext = osg::FBOExtensions::instance(renderInfo.getContextID(),true);
+#ifdef USE_GLEXTENSION
+        osg::GLExtensions* fbo_ext = renderInfo.getState()->get<osg::GLExtensions>();
+#else 
         osg::FBOExtensions* fbo_ext = osg::FBOExtensions::instance(renderInfo.getContextID(),true);
-        
+#endif 
         // we don't use shader, that means that the mipmaps are generated in hardware, hence do this
         std::map<int, osg::ref_ptr<osg::Texture> >::iterator it = mOutputTex.begin();
         for (; it != mOutputTex.end(); it++)

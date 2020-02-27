@@ -15,6 +15,7 @@
  ***************************************************************************/
 
 #include <sstream>
+#include <fstream>
 
 #include <osgPPU/Processor.h>
 #include <osgPPU/Unit.h>
@@ -128,7 +129,8 @@ public:
         std::string fileName = osgDB::findDataFile( file, options );
         if (fileName.empty()) return ReadResult::FILE_NOT_FOUND;
 
-        std::ifstream fin(fileName.c_str());
+        //std::ifstream fin(fileName.c_str());
+		std::fstream fin(fileName.c_str(),std::ios::in);
         if (!fin) return ReadResult("osgPPU::readObject - Unable to open file for reading");
 
         // during the reading we require to read some data from the osg plugin, hence preload this library
